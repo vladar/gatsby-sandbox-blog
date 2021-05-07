@@ -1,5 +1,14 @@
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
+const { open } = require(`lmdb-store`)
+
+exports.onPreBootstrap = async () => {
+  const myStore = open({
+    path: `my-store`,
+  })
+  await myStore.put(`test`, `value`)
+  console.log(`opened?`, myStore.get(`test`))
+}
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
